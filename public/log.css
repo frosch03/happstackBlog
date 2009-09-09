@@ -1,0 +1,104 @@
+body {	
+    color:#CCCCCC;
+    font-style:normal;
+    background-color:#333333;
+    font-size:9pt;
+    font-family:Arial,Helvetica,sans-serif;
+    text-align:justify
+}
+
+a:hover {	
+    color:#FFFFFF;
+    font-style:normal;
+    background-color:#000000;
+    text-decoration:none
+}
+
+a:link {	
+    color:#FFFFFF;
+    font-style:normal;
+    text-decoration:none
+}
+
+a:visited {	
+    color:#FFFFFF;
+    font-style:normal;
+    text-decoration:none
+}
+
+A:active {	
+    color:#FF0000;
+    font-style:normal;
+    text-decoration:none
+}
+
+.code {	
+    font-family:monospace;
+    margin:10px;
+    padding:20px
+}
+
+.codeblock {	
+    background-color:#d3d3d3;
+    color:black;
+    font-family:monospace;
+    margin:10px;
+    padding:20px;
+    overflow :auto
+}
+
+.top {	
+}
+
+.headline {
+    font-size: 16pt;
+}
+
+.layer {    
+    background-color:#003366;
+    border-width:1px;
+    border-style:solid;
+    padding:5px;
+    padding-left:2em;
+    margin:10px
+}
+
+.posting {    
+    border-width:0px;
+    border-bottom-width:1px;
+    border-style:dotted;
+    padding-left:2em;
+    padding-right:2em;
+    margin:10px
+}
+
+.box {	
+    padding:5px;
+    padding-left:16em;
+    margin:10px;
+    width:70%
+}
+
+.left {	
+    float:left
+}
+
+table {     
+    border-collapse:collapse
+}
+
+th {    
+    border-width:1px;
+    border-color:#a0a0a0;
+    border-style:solid;
+    padding-left:5px;
+    padding-right:5px
+}
+
+td {	
+    border-width:1px;
+    border-color:#808080;
+    border-style:dotted;
+    padding-left:5px;
+    padding-right:5px
+}
