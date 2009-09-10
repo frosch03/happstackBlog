@@ -49,8 +49,8 @@ main =
 
        control <- startSystemState' (store appConf) stateProxy
 
-       art1
-       art2
+--       art1
+--       art2
 
        httpTid <- forkIO $ simpleHTTP (httpConf appConf) appHandler
 
@@ -93,5 +93,5 @@ parseConfig args
 startSystemState' :: (Component st, Methods st) => String -> Proxy st -> IO (MVar TxControl)
 startSystemState' = runTxSystem . Queue . FileSaver
 
-art1 = query ReadWeblog >>= \x -> update $ PostToArticle (pack "first Article") (pack "line1\nline2\nline3\tasdf\nende") (MkWeblog x)
-art2 = query ReadWeblog >>= \x -> update $ PostToArticle (pack "secound Article") (pack "line1\nline2\nline3\tasdf\nende") (MkWeblog x) 
+-- art1 = query ReadWeblog >>= \x -> update $ PostToArticle (pack "first Article") (pack "line1\nline2\nline3\tasdf\nende") (MkWeblog x)
+-- art2 = query ReadWeblog >>= \x -> update $ PostToArticle (pack "secound Article") (pack "line1\nline2\nline3\tasdf\nende") (MkWeblog x) 

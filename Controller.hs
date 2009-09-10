@@ -24,7 +24,7 @@ appHandler = msum [ dir "css" (fileServe [] "public")
                   , exactdir "" (return.toResponse.HtmlString $ "Surf to /blog for the blog")
                   , dir "blog" (viewWeblog)
                   , dir "post" (methodSP GET  (viewPostArticle) `mappend` 
-                                methodSP POST (processformPostArticle))
+                                methodSP POST (processformPostArticle)) 
 --                  , adminHandler  >>= renderFromBody "funFrogger's Admin" 
                   ]
 
@@ -51,7 +51,7 @@ processformPostArticle :: ServerPartT IO Response
 processformPostArticle = do Just posting <- getData
                             now          <- liftIO getClockTime
                             update $ PostArticle posting
-                            viewPostArticle
+                            viewWeblog
 
 
 putArticle :: ServerPartT IO (HSP XML)
