@@ -5,6 +5,8 @@ module Controller where
 
 import HSP
 import Happstack.Server
+import Happstack.Server.SURI (ToSURI)
+import Happstack.Server.SimpleHTTP
 import Happstack.Helpers
 import Happstack.State
 import Happstack.Data (defaultValue)
@@ -17,6 +19,10 @@ import State
 import View
 
 import Data.ByteString.Char8 (pack, unpack)
+
+
+redir :: (FilterMonad Response m, ToSURI uri) => uri -> m Response
+redir url = seeOther url (toResponse "")
 
 appHandler :: ServerPartT IO Response
 appHandler = msum [ methodM GET >> seeOther "/blog" (toResponse ()) -- matches /  
@@ -51,7 +57,7 @@ processformPostArticle :: ServerPartT IO Response
 processformPostArticle = do Just posting <- getData
                             now          <- liftIO getClockTime
                             update $ PostArticle posting
-                            seeOther "/blog" (toResponse ())
+                            redir "/blog"
 
 
 putArticle :: ServerPartT IO (HSP XML)
