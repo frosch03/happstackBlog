@@ -114,19 +114,3 @@ renderInput title = webHSP . pageFromBody title $
             <input type="submit" tabindex="3" accesskey="P" value="Post Article" />
         </p>
     </form>
-
-renderInputForm :: (MonadIO m) => m Response
-renderInputForm = webHSP $ 
-    <form action="/post" method="post" enctype="multipart/form-data;charset=UTF-8" accept-charset="UTF-8">
-        <p>
-            <label for="headline"><span class="accesskey">H</span>eadline</label><br />
-            <input type="text" name="headline" id="headline" tabindex="1" accesskey="H" />
-        </p>
-        <p>
-            <label for="text"><span class="accesskey">T</span>ext</label><br />
-            <textarea cols="80" rows="10" name="text" id="text" tabindex="2" accesskey="T"></textarea>
-        </p>
-        <p>
-            <input type="submit" tabindex="3" accesskey="P" value="Post Article" />
-        </p>
-    </form>

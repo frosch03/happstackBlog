@@ -9,12 +9,16 @@ import Control.Monad.Reader
 import Data.Generics
 import qualified Data.ByteString as B
 
+import System.Time (ClockTime (), getClockTime)
+
+
 type BlogString = B.ByteString
 type Headline   = BlogString
 type Text       = BlogString
 
 data Article = MkArticle { headline :: Headline
                          , text     :: Text
+                         , time     :: ClockTime
                          } 
     deriving (Show, Read, Ord, Eq, Typeable, Data)
 
@@ -44,5 +48,10 @@ postToArticle headline text (MkWeblog weblog) = put $ MkWeblog (newArticle:weblo
 
 postArticle :: Article -> Update Weblog ()
 postArticle article = modify $ \(MkWeblog weblog) -> MkWeblog (article:weblog)
+
+postArticleTest :: Article -> IO ClockTime -> Update Weblog ()
+postArticleTest article time = modify $ \(MkWeblog weblog) -> MkWeblog (article:weblog)
+
+
 
 $(mkMethods ''Weblog ['readWeblog, 'postToArticle, 'postArticle])
