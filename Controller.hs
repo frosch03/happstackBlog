@@ -29,28 +29,21 @@ appHandler = msum [ methodM GET >> seeOther "/blog" (toResponse ()) -- matches /
                   , dir "img" (fileServe [] "images")
                   , dir "css" (fileServe [] "public")
                   , dir "blog" (viewWeblog)
-                  , dir "post" (methodSP GET  (viewPostArticle) `mappend` 
-                                methodSP POST (processformPostArticle)) 
---                  , adminHandler  >>= renderFromBody "funFrogger's Admin" 
+                  , dir "post" postHandler
                   ]
-
-weblogHandler :: ServerPartT IO (HSP XML)
-weblogHandler = dir "blog" $ msum [putArticle, getWeblog]
-
--- adminHandler :: ServerPartT IO (HSP XML)
--- adminHandler  = dir "post" $ msum [renderInputForm]
 
 viewWeblog :: ServerPartT IO Response
 viewWeblog = getWeblog >>= renderFromBody "funFrogger's Weblog"
 
-getWeblog :: ServerPartT IO (HSP XML)
-getWeblog = methodM GET >> 
-                        do wblg <- query ReadWeblog 
-                           ok $ <div><% wblg %></div>
 
+
+postHandler :: ServerPartT IO Response
+postHandler  = msum [ methodSP GET  (viewPostArticle)
+                    , methodSP POST (processformPostArticle)
+                    ]
 
 viewPostArticle :: ServerPartT IO Response
-viewPostArticle = do x <- renderInputForm
+viewPostArticle = do x <- (renderInput "new article")
                      return x
 
 processformPostArticle :: ServerPartT IO Response
@@ -58,6 +51,14 @@ processformPostArticle = do Just posting <- getData
                             now          <- liftIO getClockTime
                             update $ PostArticle posting
                             redir "/blog"
+
+
+
+
+getWeblog :: ServerPartT IO (HSP XML)
+getWeblog = methodM GET >> 
+                        do wblg <- query ReadWeblog 
+                           ok $ <div><% wblg %></div>
 
 
 putArticle :: ServerPartT IO (HSP XML)

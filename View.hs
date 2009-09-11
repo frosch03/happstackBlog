@@ -101,7 +101,7 @@ pageFromBody title body =
 
 renderInput :: (MonadIO m) => String -> m Response
 renderInput title = webHSP . pageFromBody title $
-    <form action="/posting" method="post" enctype="multipart/form-data;charset=UTF-8" accept-charset="UTF-8">
+    <form action="/post" method="post" enctype="multipart/form-data;charset=UTF-8" accept-charset="UTF-8">
         <p>
             <label for="headline"><span class="accesskey">H</span>eadline</label><br />
             <input type="text" name="headline" id="headline" tabindex="1" accesskey="H" />
