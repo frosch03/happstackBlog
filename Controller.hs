@@ -19,9 +19,9 @@ import View
 import Data.ByteString.Char8 (pack, unpack)
 
 appHandler :: ServerPartT IO Response
-appHandler = msum [ dir "css" (fileServe [] "public")
+appHandler = msum [ methodM GET >> seeOther "/blog" (toResponse ()) -- matches /  
                   , dir "img" (fileServe [] "images")
-                  , exactdir "" (return.toResponse.HtmlString $ "Surf to /blog for the blog")
+                  , dir "css" (fileServe [] "public")
                   , dir "blog" (viewWeblog)
                   , dir "post" (methodSP GET  (viewPostArticle) `mappend` 
                                 methodSP POST (processformPostArticle)) 
@@ -51,7 +51,7 @@ processformPostArticle :: ServerPartT IO Response
 processformPostArticle = do Just posting <- getData
                             now          <- liftIO getClockTime
                             update $ PostArticle posting
-                            viewWeblog
+                            seeOther "/blog" (toResponse ())
 
 
 putArticle :: ServerPartT IO (HSP XML)
