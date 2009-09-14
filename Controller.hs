@@ -13,7 +13,7 @@ import Happstack.Data (defaultValue)
 import Control.Monad
 import Control.Monad.Trans (liftIO)
 import Data.Monoid (mappend)
-import System.Time (getClockTime)
+import System.Time
 
 import State
 import View
@@ -48,8 +48,8 @@ viewPostArticle = do x <- (renderInput "new article")
 
 processformPostArticle :: ServerPartT IO Response
 processformPostArticle = do Just posting <- getData
-                            now          <- liftIO getClockTime
-                            update $ PostArticle posting
+                            (TOD sec _)  <- liftIO getClockTime
+                            update $ PostArticleTest (posting {time = sec})
                             redir "/blog"
 
 
@@ -72,4 +72,4 @@ instance FromData Article where
   fromData = do
     headline <- look "headline"
     text     <- look "text"
-    return $ MkArticle (pack headline) (pack text) -- defaultValue
+    return $ MkArticle (pack headline) (pack text) 0 -- defaultValue

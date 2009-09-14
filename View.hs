@@ -10,15 +10,17 @@ import Happstack.Server (Response, ok, ServerPartT)
 import Happstack.Server.HSP.HTML (webHSP)
 import State
 
+import System.Time
+
 import Data.ByteString.Char8 (pack, unpack)
 
 newtype WithLineBreak = MkWithLineBreak String
 
 instance (XMLGenerator m) => (EmbedAsChild m (Article)) where
-    asChild (MkArticle hl tx) = 
+    asChild (MkArticle hl tx dt) = 
         <%
             <div class="posting">
-                <div class="headline"><% unpack $ hl %></div>
+                <div class="headline"><% unpack $ hl %></div><% show (TOD dt 0) %>
                 <br />
                 <% map p (lines.unpack $ tx) %>
             </div>
