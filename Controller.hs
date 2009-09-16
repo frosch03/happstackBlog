@@ -20,6 +20,8 @@ import View
 
 import Data.ByteString.Char8 (pack, unpack)
 
+import Happstack.Auth
+
 
 redir :: (FilterMonad Response m, ToSURI uri) => uri -> m Response
 redir url = seeOther url (toResponse "")
@@ -30,7 +32,35 @@ appHandler = msum [ methodM GET >> seeOther "/blog" (toResponse ()) -- matches /
                   , dir "css" (fileServe [] "public")
                   , dir "blog" (viewWeblog)
                   , dir "post" postHandler
+
+                  , dir "login"   $ withSession (\_ -> redir "/blog") loginSpt
+                  , dir "logout"  $ logoutHandler (redir "/blog")
+                  , dir "newuser" $ methodSP POST $ withData newUserHandler
                   ]
+
+loginSpt:: ServerPartT IO Response
+loginSpt = msum [ methodSP GET  (fileServe ["login.html"] ".")
+                , methodSP POST (loginHandler loginGood loginBad)
+                ]
+
+loginGood :: ServerPart Response
+loginGood = redir "/post"
+
+loginBad :: ServerPart Response
+loginBad = ok $ toResponse $ "invalid login"
+
+newUserHandler :: NewUserInfo -> ServerPartT IO Response
+newUserHandler (NewUserInfo user pass1 pass2) 
+    | pass1 == pass2 = checkAndAdd regExists (redir "/post") (Username user) pass1
+    | otherwise      = regNoMatch
+
+regExists  :: ServerPartT IO Response
+regExists  = anyRequest $ ok $ toResponse "User Exists"
+
+regNoMatch :: ServerPartT IO Response 
+regNoMatch = anyRequest $ ok $ toResponse "Passwords did not match"
+
+
 
 viewWeblog :: ServerPartT IO Response
 viewWeblog = getWeblog >>= renderFromBody "funFrogger's Weblog"
