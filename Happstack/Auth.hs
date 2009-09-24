@@ -18,6 +18,8 @@ module Happstack.Auth ( withSession
                       , unUser
                       , ListUsers(ListUsers)
                       , SessionKey
+                      , UserAuthInfo()
+                      , AuthUser
                       ) where
 
 import Char
@@ -26,8 +28,8 @@ import Numeric
 import Random
 
 import qualified Data.Map as M
-import Control.Monad.Reader
-import Control.Monad.State (modify,put,get,gets)
+import Control.Monad.Readerut
+import Control.Monad.State (modify,put,get,gets, StateT)
 import Control.Monad.Trans
 import Codec.Utils
 import Data.ByteString.Internal

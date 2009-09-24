@@ -1,6 +1,7 @@
 module Main where
 
 import Control.Concurrent (MVar, forkIO, killThread)
+import Control.Concurrent.MVar
 import Happstack.Util.Cron (cron)
 import Happstack.State (waitForTermination)
 import Happstack.Server
